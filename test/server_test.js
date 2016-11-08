@@ -21,7 +21,7 @@ const createBook = (attributes) => {
       expect(response.body.title).to.eql(attributes.title)
       expect(response.body.year).to.eql(attributes.year)
       expect(response.body.author).to.eql(attributes.author)
-      expect(response.body.genres).to.eql((attributes.genres||[]).sort())
+      expect((response.body.genres||[]).sort()).to.eql((attributes.genres||[]).sort())
       return response.body
     })
 }
@@ -69,7 +69,8 @@ describe('HTTP Server', () => {
         expect(book.title).to.eql("Starship Troopers")
         expect(book.author).to.eql("Robert A. Heinlein")
         expect(book.year).to.eql(2004)
-        expect(book.genres).to.eql(["Sci-fi", "Space", "Aliens"].sort())
+        expect(book.genres).to.not.be.empty
+        expect(book.genres.sort()).to.eql(["Sci-fi", "Space", "Aliens"].sort())
       })
     })
     context('when missing title', () => {
