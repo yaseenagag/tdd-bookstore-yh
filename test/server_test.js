@@ -142,7 +142,7 @@ describe('HTTP Server', () => {
     })
 
     describe('GET /api/books?author=phILip', () => {
-      it('should render the next 10 books', () => {
+      it('should render books with authors named "Philip" (case insensitive)', () => {
         return request('get', '/api/books?author=phILip').then(response => {
           expectResponseToHaveStatus(response, 200)
           const books = response.body
@@ -158,7 +158,7 @@ describe('HTTP Server', () => {
     })
 
     describe('GET /api/books?title=wORld', () => {
-      it('should render the next 10 books', () => {
+      it('should render books with a title including "world" (case insensitive)', () => {
         return request('get', '/api/books?title=wORld').then(response => {
           expectResponseToHaveStatus(response, 200)
           const books = response.body
@@ -174,7 +174,7 @@ describe('HTTP Server', () => {
     })
 
     describe('GET /api/books?year=1953', () => {
-      it('should render the next 10 books', () => {
+      it('should render books published in 1953', () => {
         return request('get', '/api/books?year=1953').then(response => {
           expectResponseToHaveStatus(response, 200)
           const books = response.body
@@ -192,7 +192,7 @@ describe('HTTP Server', () => {
     })
 
     describe('GET /api/books?year=1953&title=th', () => {
-      it('should render the next 10 books', () => {
+      it('should render books published in 1953 and with a title that includes the string "th"', () => {
         return request('get', '/api/books?year=1953&title=th').then(response => {
           expectResponseToHaveStatus(response, 200)
           const books = response.body
@@ -300,7 +300,7 @@ describe('HTTP Server', () => {
     })
 
     describe('POST /api/book/12/delete', () => {
-      it('should update delete the book', () => {
+      it('should delete the book', () => {
         return request('get', '/api/books/12')
           .then(response => {
             expectResponseToHaveStatus(response, 200)
