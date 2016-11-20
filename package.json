@@ -4,7 +4,8 @@
   "description": "Test Driven Book Store",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test/setup.js --recursive test/"
+    "test": "mocha ./test/setup.js --recursive test/",
+    "start": "nodemon ./config/database.js"
   },
   "engines": {
     "node": ">=7.0.0",
@@ -21,7 +22,9 @@
   },
   "homepage": "https://github.com/GuildCrafts/tdd-bookstore#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "pg-promise": "^5.3.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",

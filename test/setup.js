@@ -52,4 +52,3 @@ global.request = (method, path, postBody) => {
     })
   })
 }
-
