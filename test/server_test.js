@@ -101,7 +101,7 @@ describe('HTTP Server', () => {
       )
     )
 
-    describe('GET /api/books', () => {
+    describe.only('GET /api/books', () => {
       it('should render 10 books', () => {
         return request('get', '/api/books').then(response => {
           expectResponseToHaveStatus(response, 200)
