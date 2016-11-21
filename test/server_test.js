@@ -102,7 +102,7 @@ describe('HTTP Server', () => {
     )
 
     describe('GET /api/books', () => {
-      it.only('should render 10 books', () => {
+      it('should render 10 books', () => {
         return request('get', '/api/books').then(response => {
           expectResponseToHaveStatus(response, 200)
           expect(response.headers['content-type']).to

@@ -140,9 +140,28 @@ const getWholeBooksByIds = bookIds => {
   )
 }
 
+// const getTenBooks = () => {
+//   return getFirstTenBookIds()
+//     .then(bookIds => getWholeBooksByIds(bookIds))
+// }
+
 const getTenBooks = () => {
-  return getFirstTenBookIds()
-    .then(bookIds => getWholeBooksByIds(bookIds))
+  return pgpdb.query(`
+    select books.id,
+      books.title,
+      books.year,
+      authors.name as author,
+      json_agg(genres.name order by genres.name asc) as genres
+    from books
+      join book_genres on books.id = book_genres.book_id
+      join genres on book_genres.genre_id = genres.id
+      join book_authors on books.id = book_authors.book_id
+      join authors on book_authors.author_id = authors.id
+    group by books.id, title, year, author
+    limit 10
+  `)
 }
+
+
 
 module.exports = { resetDb, createWholeBook, getTenBooks }
