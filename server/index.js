@@ -30,9 +30,10 @@ server.post('/api/books', (request, response, next) => {
 })
 
 server.get('/api/books', (request, response, next) => {
-  db.getTenBooks().then((books) => {
-    response.status(200).json(books)
-  })
+  db.getTenBooks()
+    .then((books) => {
+      response.status(200).json(books)
+    })
 })
 
 if (process.env.NODE_ENV !== 'test'){

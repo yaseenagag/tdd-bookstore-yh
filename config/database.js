@@ -60,9 +60,89 @@ const createWholeBook = book => {
   })
 }
 
-//// this needs to get author and genres too
+
+const getAuthorIdByBookId = bookId => {
+  return pgpdb.query('select author_id from book_authors where book_id = $1', [bookId])
+    .then(result => result[0].author_id)
+}
+
+const getAuthorById = authorId => {
+  return pgpdb.query('select name from authors where id = $1', [authorId])
+    .then(result => result[0].name)
+}
+
+const getAuthorByBookId = bookId => {
+  return getAuthorIdByBookId(bookId)
+    .then(authorId => {
+      return getAuthorById(authorId)
+    })
+}
+
+const getGenreIdsByBookId = bookId => {
+  return pgpdb.query('select genre_id from book_genres where book_id = $1', [bookId])
+    .then(results => results.map(resultsObj => resultsObj.genre_id))
+}
+
+const getGenreById = genreId => {
+  return pgpdb.query('select name from genres where id = $1', genreId)
+    .then(result => result[0].name)
+}
+
+const getGenresByIds = genreIds => {
+  return Promise.all(
+    genreIds.map(genreId => {
+      return getGenreById(genreId)
+    })
+  )
+}
+
+const getGenresByBookId = bookId => {
+  return getGenreIdsByBookId(bookId)
+    .then(genreIds => {
+      return getGenresByIds(genreIds)
+    })
+}
+
+const getBookById = bookId => {
+  return pgpdb.query('select title, year, id from books where id = $1', bookId)
+    .then(result => {
+      return result[0]
+    })
+}
+
+const getWholeBookById = bookId => {
+  return Promise.all([
+    getBookById(bookId),
+    getAuthorByBookId(bookId),
+    getGenresByBookId(bookId)
+  ])
+  .then(results => {
+    const book = results[0]
+    const author = results[1]
+    const genres = results[2]
+
+    let wholeBook = book
+    wholeBook.author = author
+    wholeBook.genres = genres
+
+    return wholeBook
+  })
+}
+
+const getFirstTenBookIds = () => {
+  return pgpdb.query('select id from books limit 10')
+    .then(idsObjs => idsObjs.map(idObj => idObj.id))
+}
+
+const getWholeBooksByIds = bookIds => {
+  return Promise.all(
+    bookIds.map(bookId => getWholeBookById(bookId))
+  )
+}
+
 const getTenBooks = () => {
-  return pgpdb.query('select * from books limit 10')
+  return getFirstTenBookIds()
+    .then(bookIds => getWholeBooksByIds(bookIds))
 }
 
 module.exports = { resetDb, createWholeBook, getTenBooks }
