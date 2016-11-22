@@ -140,12 +140,13 @@ const getWholeBooksByIds = bookIds => {
   )
 }
 
-// const getTenBooks = () => {
-//   return getFirstTenBookIds()
-//     .then(bookIds => getWholeBooksByIds(bookIds))
-// }
+const getOldTenBooks = () => {
+  return getFirstTenBookIds()
+    .then(bookIds => getWholeBooksByIds(bookIds))
+}
 
-const getTenBooks = () => {
+const getTenBooks = (page = 1) => {
+  const offset = (page-1) * 10
   return pgpdb.query(`
     select books.id,
       books.title,
@@ -158,10 +159,8 @@ const getTenBooks = () => {
       join book_authors on books.id = book_authors.book_id
       join authors on book_authors.author_id = authors.id
     group by books.id, title, year, author
-    limit 10
-  `)
+    limit 10 offset $1
+  `, [offset])
 }
-
-
 
 module.exports = { resetDb, createWholeBook, getTenBooks }

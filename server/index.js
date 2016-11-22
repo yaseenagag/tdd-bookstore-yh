@@ -22,7 +22,7 @@ server.post('/api/books', (request, response, next) => {
     db.createWholeBook(request.body).then(book => {
       response.status(201).json(book)
     })
-  } else {  
+  } else {
     response.status(400).json({
       error: {message: 'title cannot be blank'}
     })
@@ -32,8 +32,8 @@ server.post('/api/books', (request, response, next) => {
 
 
 server.get('/api/books', (request, response, next) => {
-  db.getTenBooks()
-    .then((books) => {
+  let page = ( parseInt( request.query.page ) ) || 1
+  db.getTenBooks(page).then((books, page) => {
       response.status(200).json(books)
     })
 })

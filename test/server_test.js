@@ -127,7 +127,6 @@ describe('HTTP Server', () => {
           const page2Books = page2Request.body
           expect(page1Books.length).to.eql(10)
           expect(page2Books.length).to.eql(10)
-
           const page1BookIds = page1Books.map(book => book.id)
           const page2BookIds = page2Books.map(book => book.id)
           page1BookIds.forEach(bookId => {
