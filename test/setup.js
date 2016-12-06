@@ -22,7 +22,7 @@ beforeEach(() => {
 
 Failed to reset your database!
 
-Please ensure you app responds to:
+Please ensure your app responds to:
   POST /api/test/reset-db
 
 This endpoint should truncate your entire database as well as migrate it up to your latest schema.
